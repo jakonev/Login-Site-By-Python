@@ -7,21 +7,47 @@ from selenium import webdriver
 # salve na mesma pasta do seu projeto, caso contrário tera que ficar identificando onde ele esta....
 # driver = webdriver.Chrome("D:\Python Projects\loguin_site\chromedriver")
 
+class WebDriverManager:
+    def __init__(self, driver_path='D:/Python Projects'):
+        self.driver_path = driver_path
+        self.driver = None
 
-url = ("https://github.com/login")
-usuario = 'usuario'
-password = '12234'
+    def start_driver(self):
+        self.driver = webdriver.Chrome(self.driver_path)
 
-driver = webdriver.Chrome()
-driver.get(url)
+    def get_driver(self):
+        if not self.driver:
+            self.start_driver()
+        return self.driver
 
+    def quit_driver(self):
+        if self.driver:
+            self.driver.quit()
 
-driver.find_element("id", "login_field").send_keys(usuario)
+class GitHubLoginAutomation:
+    def __init__(self, usuario, senha):
 
-driver.find_element("id", "password").send_keys(password)
+        self.usuario = usuario
+        self.senha = senha
 
-driver.find_element("name", "commit").click()
-sleep(2000)
+    def login(self):
+        url = ("https://github.com/login")
+        usuario = 'usuario'
+        password = '12234'
+        driver = webdriver.Chrome()
+        driver.get(url)
+        driver.find_element("id", "login_field").send_keys(usuario)
+        driver.find_element("id", "password").send_keys(password)
+        driver.find_element("name", "commit").click()
+        sleep(18)
 
+def main():
+    url = "https://github.com/login"
+    usuario = 'usuario'
+    senha = '12234'
 
-sleep(2000)
+    github_login = GitHubLoginAutomation(usuario, senha)
+    github_login.login()
+
+if __name__ == "__main__":
+    main()
